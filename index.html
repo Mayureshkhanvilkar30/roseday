@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rose Day Surprise</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Great+Vibes&display=swap');
+
+        body {
+            background-color: #050505;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            transition: backdrop-filter 0.5s ease;
+        }
+
+        .page { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; position: absolute; transition: opacity 0.5s; }
+        .active { display: flex; }
+
+        /* --- PAGE 1: REAL ROSE --- */
+        .rose-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .real-rose {
+            width: 280px;
+            filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.4));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.02); }
+        }
+
+        /* --- PAGE 2: ENVELOPE & BLUR --- */
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: #f0f0f0;
+            border-radius: 0 0 10px 10px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 110px solid #dcdcdc;
+            transform-origin: top;
+            transition: transform 0.6s ease;
+            z-index: 15;
+        }
+
+        /* Heart Seal Fixed at the Opening Point */
+        .heart-seal {
+            position: absolute;
+            top: 80px; /* Adjusted to sit exactly at the point */
+            left: 48.5%;
+            transform: translateX(-50%);
+            font-size: 30px;
+            color: #ff4d4d;
+            filter: drop-shadow(0 0 5px rgba(255, 77, 77, 0.8));
+            z-index: 20;
+            transition: opacity 0.3s;
+        }
+
+        /* Notebook Style Letter */
+        .letter {
+            position: absolute;
+            top: 10px;
+            width: 90%;
+            height: 180px;
+            background: #fff;
+            background-image: linear-gradient(#e1e1e1 1px, transparent 1px);
+            background-size: 100% 25px; /* Creates notebook lines */
+            padding: 30px 20px 20px 40px; /* Extra padding for margin */
+            box-sizing: border-box;
+            text-align: left;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5; 
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            border-left: 2px solid #ffadad; /* Notebook pink margin line */
+        }
+
+        .pocket {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+            z-index: 12;
+            border-radius: 0 0 10px 10px;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 0, 50% 50%, 0 0);
+        }
+
+        /* --- OPEN STATE --- */
+        .envelope-wrapper.open .flap { transform: rotateX(180deg); z-index: 2; }
+        .envelope-wrapper.open .heart-seal { opacity: 0; }
+        .envelope-wrapper.open .letter {
+            transform: translateY(-165px) scale(1.1);
+            z-index: 25;
+            opacity: 1;
+            height: auto;
+            min-height: 240px;
+        }
+
+        .envelope-wrapper.open ~ .hide-on-open { opacity: 0; pointer-events: none; }
+
+        .shayri { font-family: 'Great Vibes', cursive; color: #d50000; font-size: 1.8rem; margin: 0; }
+        .heart-bg { position: absolute; color: #ff3333; animation: heartFly 4s linear infinite; pointer-events: none; z-index: 1; }
+        
+        @keyframes heartFly { 
+            0% { transform: translateY(100vh) scale(0.5); opacity: 1; } 
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } 
+        }
+
+        .hide-on-open { transition: opacity 0.4s ease; }
+    </style>
+</head>
+<body>
+
+    <div id="page1" class="page active">
+        <div class="rose-box" onclick="showPage(2)">
+            <img src="\Rose day\rose.jpeg" alt="Rose" class="real-rose">
+            <h1 style="font-family: 'Great Vibes', cursive; color: #ff4d4d; font-size: 3.5rem; margin: 20px 0 0;">Happy Rose Day! ❤️</h1>
+            <p style="color: #ffcccc; font-style: italic; margin-top: 10px;">
+                Jashi hi gulabach phool sundar aahe,<br>
+                tashiach tu mazyasathi khup special aahes!
+            </p>
+            <p style="color: #444; font-size: 0.8rem; margin-top: 20px;">(Touch the rose to see your surprise...)</p>
+        </div>
+    </div>
+
+    <div id="page2" class="page">
+        <h2 class="hide-on-open" style="font-family: 'Great Vibes'; font-size: 2.5rem; color: #ff4d4d; margin-bottom: 30px;">A Special Letter For You</h2>
+        
+        <div class="envelope-wrapper" onclick="toggleEnvelope(this)">
+            <div class="flap"></div>
+            <div class="heart-seal">❤️</div>
+            
+            <div class="letter">
+                <p class="shayri">heyy bauu..🐣❤️</p>
+                <p style="font-size: 0.9rem; color: #333; line-height: 25px; margin-top: 10px;">
+                    Jash ha gulab saglyan ch prem vyakt karth tyachi sunderta
+                    jashi saglyan sathi priyh aaste tashich.<br>
+                    <b>Tu mazyasathi jagatli saglyat sundar rose aahes! </b> 
+                       <I>I love you so much, and I am so grateful to have you in my life.</I>  
+                   
+                </p>
+                <p style="font-size: 0.7rem; font-weight: bold; margin-top: 15px; color: #d50000; text-align: right;">Forever Yours ❤️</p>
+            </div>
+            <div class="pocket"></div>
+        </div>
+
+        <p class="hide-on-open" style="margin-top: 60px; color: #ffcccc; font-size: 0.9rem;">Tap the heart to open your heart</p>
+    </div>
+
+    <script>
+        function showPage(num) {
+            document.getElementById('page1').classList.remove('active');
+            document.getElementById('page2').classList.add('active');
+        }
+
+        function toggleEnvelope(el) {
+            el.classList.toggle('open');
+            if(el.classList.contains('open')) {
+                document.body.style.backdropFilter = "blur(10px)";
+                document.body.style.backgroundColor = "rgba(5, 5, 5, 0.8)";
+            } else {
+                document.body.style.backdropFilter = "none";
+                document.body.style.backgroundColor = "#050505";
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-bg');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+        setInterval(createHeart, 400);
+    </script>
+</body>
+</html>
